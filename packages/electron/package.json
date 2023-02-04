@@ -1,4 +1,6 @@
 {
+  "name": "general-pip",
+  "version": "1.0.0",
   "description": "Simple General PiP",
   "keywords": [
     "electron",
