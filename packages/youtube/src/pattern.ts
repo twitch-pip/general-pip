@@ -1,0 +1,1 @@
+export const URL_PATTERN = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?(.+)/;
