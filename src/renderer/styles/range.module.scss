@@ -4,6 +4,7 @@
   &_wrapper {
     display: flex;
     gap: 10px;
+    width: 80%;
     align-items: center;
 
     input {
@@ -32,6 +33,7 @@
     height: 2px;
     background: #ddd;
     border-radius: 10px;
+    flex: 1;
 
     &_inner {
       position: absolute;

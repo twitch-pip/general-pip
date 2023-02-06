@@ -20,16 +20,16 @@ function ControlBar() {
   return (
     <>
       <div className={styles.control}>
-        <RangeBar length={256} default={0} onRangeChanged={setCurrent} />
+        <RangeBar default={0} onRangeChanged={setCurrent} />
         <div className={styles.control_wrapper}>
           <img className={styles.control_play} onClick={() => setPlay(!play)} src={play ? PauseImg : PlayImg} alt="재생" />
           <div className={styles.control_wrapper}>
             <img src={SoundImg} alt="음량" />
-            <RangeBar length={70} default={volume} onRangeChanged={setVolume} />
+            <RangeBar default={volume} onRangeChanged={setVolume} />
           </div>
           <div className={styles.control_wrapper}>
             <img src={OpacityImg} alt="불투명도" />
-            <RangeBar length={70} default={opacity} onRangeChanged={setOpacity} />
+            <RangeBar default={opacity} onRangeChanged={setOpacity} />
           </div>
         </div>
       </div>
