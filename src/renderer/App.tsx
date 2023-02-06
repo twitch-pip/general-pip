@@ -1,4 +1,4 @@
-import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import ControlBar from './components/ControlBar';
 import Index from './pages';
 import Pip from './pages/pip';
