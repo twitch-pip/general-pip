@@ -4474,7 +4474,7 @@ eslint-module-utils@^2.7.4:
   dependencies:
     debug "^3.2.7"
 
-eslint-plugin-compat@^4.0.2:
+eslint-plugin-compat@^4.0.2, eslint-plugin-compat@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-compat/-/eslint-plugin-compat-4.1.0.tgz#9f5abd0ddfe9fb9e576c22aabb4b681ed1e8d02f"
   integrity sha512-RR03477yDkxWsoek1NuF+9mFgXJJ1I6pZpmi1Olq/HFGx88Ap4p5a9MLC8qYpxCb4b84VrpXsqMUhYLr6wlMyA==

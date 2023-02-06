@@ -22,6 +22,23 @@ const electronHandler = {
       ipcRenderer.once(channel, (_event, ...args) => func(...args));
     },
   },
+  window: {
+    close() {
+      ipcRenderer.send('window.close');
+    },
+    minimize() {
+      ipcRenderer.send('window.minimize');
+    },
+    maximize() {
+      ipcRenderer.send('window.maximize');
+    },
+    unmaximize() {
+      ipcRenderer.send('window.unmaximize');
+    },
+    opacity(opacity: number) {
+      ipcRenderer.send('window.opacity', opacity);
+    }
+  }
 };
 
 contextBridge.exposeInMainWorld('electron', electronHandler);

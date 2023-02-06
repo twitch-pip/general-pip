@@ -5,7 +5,7 @@ function Pip() {
   return (
     <>
       <div className={styles.pip}>
-        <img src={close} alt="닫기" />
+        <img src={close} onClick={() => window.electron.window.close()} alt="닫기" />
       </div>
     </>
   )
