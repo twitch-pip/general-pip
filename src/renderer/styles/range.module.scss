@@ -1,0 +1,43 @@
+.range {
+  position: relative;
+
+  &_wrapper {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+
+    input {
+      position: absolute;
+      top: -7px;
+      width: 100%;
+      appearance: none;
+      background: none;
+      pointer-events: none;
+    }
+
+    input::-webkit-slider-thumb {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      border: 1px solid #b0b0b0;
+      background-color: white;
+      appearance: none;
+      pointer-events: auto;
+      cursor: pointer;
+    }
+  }
+
+  &_slide {
+    position: relative;
+    height: 2px;
+    background: #ddd;
+    border-radius: 10px;
+
+    &_inner {
+      position: absolute;
+      height: 2px;
+      background: #000;
+      border-radius: 10px;
+    }
+  }
+}
