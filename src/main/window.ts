@@ -4,7 +4,7 @@ import path from 'path';
 
 export default function createWindow(
   options?: BrowserWindowConstructorOptions,
-  urlPath = 'index.html'
+  routePath = '',
 ): BrowserWindow {
   const window = new BrowserWindow({
     show: false,
@@ -19,7 +19,7 @@ export default function createWindow(
     ...options,
   });
 
-  window.loadURL(resolveHtmlPath(urlPath));
+  window.loadURL(resolveHtmlPath('index.html') + `#${routePath}`);
 
   window.on('ready-to-show', () => {
     window.show();

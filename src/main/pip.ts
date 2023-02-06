@@ -8,14 +8,14 @@ export function createPIP() {
     frame: false,
     hasShadow: false,
     alwaysOnTop: true,
-  });
+  }, '/pip');
   const control = createWindow({
     width: 640,
     height: 120,
     frame: false,
     hasShadow: false,
     movable: false,
-  });
+  }, '/control');
   pip.setAspectRatio(16 / 9);
 
   function syncControl() {
