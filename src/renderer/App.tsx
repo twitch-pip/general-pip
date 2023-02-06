@@ -8,7 +8,8 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<ControlBar />} />
+        <Route path="/" element={<Index />} />
+        <Route path="/pip" element={<Pip />} />
       </Routes>
     </Router>
   );

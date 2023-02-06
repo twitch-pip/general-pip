@@ -20,7 +20,9 @@ function ControlBar() {
   return (
     <>
       <div className={styles.control}>
-        <RangeBar default={0} onRangeChanged={setCurrent} />
+        <div className={styles.control_wrapper}>
+          <RangeBar default={current} onRangeChanged={setCurrent} />
+        </div>
         <div className={styles.control_wrapper}>
           <img className={styles.control_play} onClick={() => setPlay(!play)} src={play ? PauseImg : PlayImg} alt="재생" />
           <div className={styles.control_wrapper}>
