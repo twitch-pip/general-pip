@@ -38,6 +38,11 @@ const electronHandler = {
     opacity(opacity: number) {
       ipcRenderer.send('window.opacity', opacity);
     }
+  },
+  pip: {
+    create() {
+      ipcRenderer.send('pip.create');
+    }
   }
 };
 
