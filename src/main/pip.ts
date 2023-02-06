@@ -13,6 +13,7 @@ export function createPIP() {
     height: 120,
     frame: false,
     hasShadow: false,
+    movable: false,
   });
   pip.setAspectRatio(16 / 9);
 
