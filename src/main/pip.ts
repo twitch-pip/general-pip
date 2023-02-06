@@ -15,13 +15,14 @@ export function createPIP() {
     frame: false,
     hasShadow: false,
     movable: false,
+    resizable: false,
   }, '/control');
   pip.setAspectRatio(16 / 9);
 
   function syncControl() {
     const [x, y] = pip.getPosition();
     control.setPosition(x, y + pip.getSize()[1]);
-    control.setSize(pip.getSize()[0], 120);
+    control.setBounds({ width: pip.getSize()[0], height: 120 });
   }
 
   pip.on('resize', syncControl);
