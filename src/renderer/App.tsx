@@ -10,6 +10,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/pip" element={<Pip />} />
+        <Route path="/control" element={<ControlBar />} />
       </Routes>
     </Router>
   );
