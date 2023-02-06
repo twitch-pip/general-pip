@@ -7,6 +7,7 @@ export function createPIP() {
     height: 360,
     frame: false,
     hasShadow: false,
+    alwaysOnTop: true,
   });
   const control = createWindow({
     width: 640,
