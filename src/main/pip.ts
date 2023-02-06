@@ -28,13 +28,7 @@ export function createPIP() {
   pip.on('move', syncControl);
 
   pip.on("closed", () => {
-    control?.close();
+    if (!control?.isDestroyed())
+      control.close();
   });
-
-  control.on("closed", () => {
-    pip?.close();
-  });
-
-  console.log("pip", pip);
-  console.log("control", control);
 }
