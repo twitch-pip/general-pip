@@ -6,11 +6,13 @@ export function createPIP() {
     width: 640,
     height: 360,
     frame: false,
+    hasShadow: false,
   });
   const control = createWindow({
     width: 640,
     height: 120,
     frame: false,
+    hasShadow: false,
   });
   pip.setAspectRatio(16 / 9);
 
