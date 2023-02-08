@@ -9,9 +9,9 @@ import { useEffect, useState } from 'react';
 function ControlBar() {
   const { ipcRenderer, control } = window.electron;
 
-  const [volume, setVolume] = useState(0);
+  const [volume, setVolume] = useState(50);
   const [opacity, setOpacity] = useState(100);
-  const [play, setPlay] = useState(false);
+  const [play, setPlay] = useState(true);
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
@@ -20,10 +20,16 @@ function ControlBar() {
   })
 
   useEffect(() => {
-    console.log("opacity", opacity);
-    console.log(control);
     control.setOpacity(opacity / 100);
   }, [opacity]);
+
+  useEffect(() => {
+    control.setVolume(volume / 100);
+  }, [volume]);
+
+  useEffect(() => {
+    control.setPlay(play);
+  }, [play]);
 
   return (
     <>

@@ -9,4 +9,24 @@ export default class Control {
     const window = BrowserWindow.getAllWindows().find((window) => window.webContents.id === event.sender.id);
     window?.getChildWindows()?.[0]?.setOpacity(opacity);
   }
+
+  @Channel("control", "volume")
+  volume(event: IpcMainInvokeEvent, volume: number, ...args: any[]) {
+    console.log(volume);
+    const window = BrowserWindow.getAllWindows().find((window) => window.webContents.id === event.sender.id);
+    window?.getChildWindows()?.[0]?.webContents.send('control.volume', volume);
+  }
+
+  @Channel("control", "current")
+  current(event: IpcMainInvokeEvent, current: number, ...args: any[]) {
+    console.log(current);
+    const window = BrowserWindow.getAllWindows().find((window) => window.webContents.id === event.sender.id);
+    window?.getChildWindows()?.[0]?.webContents.send('control.current', current);
+  }
+
+  @Channel("control", "play")
+  play(event: IpcMainInvokeEvent, state: boolean, ...args: any[]) {
+    const window = BrowserWindow.getAllWindows().find((window) => window.webContents.id === event.sender.id);
+    window?.getChildWindows()?.[0]?.webContents.send('control.play', state);
+  }
 }

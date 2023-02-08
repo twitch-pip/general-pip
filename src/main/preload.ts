@@ -5,7 +5,7 @@ import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 export type pingChannel = 'ipc-example';
 export type windowChannel = 'window.close' | 'window.minimize' | 'window.maximize' | 'window.unmaximize' | 'window.opacity';
 export type pipChannel = 'pip.create' | 'pip.video_url' | 'pip.id';
-export type controlChannel = 'control.opacity';
+export type controlChannel = 'control.opacity' | 'control.volume' | 'control.current' | 'control.play';
 
 export type Channels = pingChannel | windowChannel | pipChannel | controlChannel;
 
@@ -70,6 +70,15 @@ const electronHandler = {
   control: {
     setOpacity(opacity: number) {
       ipcRenderer.send('control.opacity', opacity);
+    },
+    setVolume(volume: number) {
+      ipcRenderer.send('control.volume', volume);
+    },
+    setCurrent(current: number) {
+      ipcRenderer.send('control.current', current);
+    },
+    setPlay(state: boolean) {
+      ipcRenderer.send('control.play', state);
     }
   }
 };

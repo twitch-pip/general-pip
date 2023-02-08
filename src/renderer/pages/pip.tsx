@@ -11,6 +11,24 @@ function Pip() {
     setUrl(url as string);
   });
 
+  ipcRenderer.on('control.volume', (volume) => {
+    const video = document.querySelector('video');
+    if (video) {
+      video.volume = volume as number;
+    }
+  });
+
+  ipcRenderer.on('control.play', (state) => {
+    const video = document.querySelector('video');
+    if (video) {
+      if (state) {
+        video.play();
+      } else {
+        video.pause();
+      }
+    }
+  });
+
   return (
     <>
       <div className={styles.pip}>
