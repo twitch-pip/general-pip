@@ -32,11 +32,11 @@ function ControlBar() {
   }, [play]);
 
   ipcRenderer.on('control.current', (current) => {
-    setCurrent(current as number);
+    setCurrent(current as number * 100);
   });
 
   function onRangeChanged(value: number) {
-    control.setCurrent(value);
+    control.setCurrent(value / 100);
     setCurrent(value);
   }
 
@@ -44,7 +44,7 @@ function ControlBar() {
     <>
       <div className={styles.control}>
         <div className={styles.control_wrapper}>
-          <RangeBar value={current} onRangeChanged={onRangeChanged} />
+          <RangeBar value={current} max={10000} onRangeChanged={onRangeChanged} />
         </div>
         <div className={styles.control_wrapper}>
           <img className={styles.control_play} onClick={() => setPlay(!play)} src={play ? PauseImg : PlayImg} alt="재생" />

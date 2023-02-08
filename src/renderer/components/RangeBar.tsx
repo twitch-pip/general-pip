@@ -6,6 +6,7 @@ type func = (range: number) => any;
 interface PropType {
   value: number;
   onRangeChanged: func;
+  max?: number;
 }
 
 function RangeBar(props: PropType) {
@@ -26,9 +27,9 @@ function RangeBar(props: PropType) {
         <div className={styles.range_slide}>
           <div style={{
             left: "0%",
-            right: `${100 - range}%`
+            right: `${((props.max ?? 100) - range) / (props.max ?? 100) * 100}%`
           }} className={styles.range_slide_inner}></div>
-          <input value={range} onChange={e => handleRange(e)} type="range" />
+          <input value={range} max={props.max} onChange={e => handleRange(e)} type="range" />
         </div>
       </div>
     </>
