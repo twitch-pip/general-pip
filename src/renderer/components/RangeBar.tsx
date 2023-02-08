@@ -4,12 +4,16 @@ import styles from '../styles/range.module.scss';
 type func = (range: number) => any;
 
 interface PropType {
-  default: number;
+  value: number;
   onRangeChanged: func;
 }
 
 function RangeBar(props: PropType) {
-  const [range, setRange] = useState(props.default);
+  const [range, setRange] = useState(props.value);
+
+  useEffect(() => {
+    setRange(props.value);
+  }, [props.value]);
 
   const handleRange = (e: ChangeEvent<HTMLInputElement>) => {
     setRange(parseInt(e.target.value));

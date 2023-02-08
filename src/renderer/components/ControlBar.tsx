@@ -31,21 +31,30 @@ function ControlBar() {
     control.setPlay(play);
   }, [play]);
 
+  ipcRenderer.on('control.current', (current) => {
+    setCurrent(current as number);
+  });
+
+  function onRangeChanged(value: number) {
+    control.setCurrent(value);
+    setCurrent(value);
+  }
+
   return (
     <>
       <div className={styles.control}>
         <div className={styles.control_wrapper}>
-          <RangeBar default={current} onRangeChanged={setCurrent} />
+          <RangeBar value={current} onRangeChanged={onRangeChanged} />
         </div>
         <div className={styles.control_wrapper}>
           <img className={styles.control_play} onClick={() => setPlay(!play)} src={play ? PauseImg : PlayImg} alt="재생" />
           <div className={styles.control_wrapper}>
             <img src={SoundImg} alt="음량" />
-            <RangeBar default={volume} onRangeChanged={setVolume} />
+            <RangeBar value={volume} onRangeChanged={setVolume} />
           </div>
           <div className={styles.control_wrapper}>
             <img src={OpacityImg} alt="불투명도" />
-            <RangeBar default={opacity} onRangeChanged={setOpacity} />
+            <RangeBar value={opacity} onRangeChanged={setOpacity} />
           </div>
         </div>
       </div>

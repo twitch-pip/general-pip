@@ -21,6 +21,7 @@ export default class Control {
   current(event: IpcMainInvokeEvent, current: number, ...args: any[]) {
     console.log(current);
     const window = BrowserWindow.getAllWindows().find((window) => window.webContents.id === event.sender.id);
+    window?.getParentWindow()?.webContents.send('control.current', current);
     window?.getChildWindows()?.[0]?.webContents.send('control.current', current);
   }
 
