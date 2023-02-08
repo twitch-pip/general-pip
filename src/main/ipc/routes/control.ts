@@ -7,6 +7,6 @@ export default class Control {
   opacity(event: IpcMainInvokeEvent, opacity: number, ...args: any[]) {
     console.log(opacity);
     const window = BrowserWindow.getAllWindows().find((window) => window.webContents.id === event.sender.id);
-    window?.getParentWindow()?.setOpacity(opacity);
+    window?.getChildWindows()?.[0]?.setOpacity(opacity);
   }
 }

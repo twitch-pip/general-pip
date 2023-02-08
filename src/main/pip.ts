@@ -4,16 +4,7 @@ import createWindow from "./window";
 export let PIPWindows: Map<string, { pip: BrowserWindow; control: BrowserWindow }> = new Map();
 
 export function createPIP(id: string, url: string) {
-  const pip = createWindow({
-    width: 640,
-    height: 360,
-    frame: false,
-    hasShadow: false,
-    alwaysOnTop: true,
-    show: false,
-  }, '/pip');
   const control = createWindow({
-    parent: pip,
     width: 640,
     height: 120,
     frame: false,
@@ -22,6 +13,15 @@ export function createPIP(id: string, url: string) {
     resizable: false,
     show: false,
   }, '/control');
+  const pip = createWindow({
+    parent: control,
+    width: 640,
+    height: 360,
+    frame: false,
+    hasShadow: false,
+    alwaysOnTop: true,
+    show: false,
+  }, '/pip');
   pip.setAspectRatio(16 / 9);
 
   function syncControl() {
@@ -34,8 +34,8 @@ export function createPIP(id: string, url: string) {
   pip.on('move', syncControl);
 
   pip.on("closed", () => {
-    // if (!control?.isDestroyed())
-    //   control.close();
+    if (!control?.isDestroyed())
+      control.close();
     PIPWindows.delete(id);
   });
 
