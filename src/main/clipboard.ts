@@ -9,7 +9,6 @@ setInterval(() => {
   if (text !== lastText) {
     lastText = text;
     console.log(text);
-    alert(text);
     decision(text);
   }
 }, 1000);
