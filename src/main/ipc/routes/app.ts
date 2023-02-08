@@ -11,4 +11,9 @@ export default class App {
   quit() {
     app.quit();
   }
+
+  @Channel('app', 'platform', 'handle')
+  platform() {
+    return process.platform;
+  }
 }

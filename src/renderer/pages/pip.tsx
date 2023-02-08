@@ -36,10 +36,14 @@ function Pip() {
     }
   });
 
+  let prevTime = 0;
   function onTimeUpdate() {
     const video = document.querySelector('video');
     if (video) {
-      control.setCurrent(video.currentTime / video.duration * 100);
+      if (video.currentTime - prevTime > 0.5) {
+        prevTime = video.currentTime;
+        control.setCurrent(video.currentTime / video.duration * 100);
+      }
     }
   }
 

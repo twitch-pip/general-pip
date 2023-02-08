@@ -3,11 +3,12 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 
 export type pingChannel = 'ipc-example';
+export type appChannel = 'app.getVersion' | 'app.quit' | 'app.platform';
 export type windowChannel = 'window.close' | 'window.minimize' | 'window.maximize' | 'window.unmaximize' | 'window.opacity';
 export type pipChannel = 'pip.create' | 'pip.video_url' | 'pip.id';
 export type controlChannel = 'control.opacity' | 'control.volume' | 'control.current' | 'control.play';
 
-export type Channels = pingChannel | windowChannel | pipChannel | controlChannel;
+export type Channels = pingChannel | appChannel | windowChannel | pipChannel | controlChannel;
 
 const electronHandler = {
   ipcRenderer: {
@@ -25,6 +26,17 @@ const electronHandler = {
     },
     once(channel: Channels, func: (...args: unknown[]) => void) {
       ipcRenderer.once(channel, (_event, ...args) => func(...args));
+    },
+  },
+  app: {
+    getVersion() {
+      return ipcRenderer.invoke('app.getVersion');
+    },
+    quit() {
+      ipcRenderer.send('app.quit');
+    },
+    platform() {
+      return ipcRenderer.invoke('app.platform');
     },
   },
   window: {
