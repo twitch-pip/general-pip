@@ -2,7 +2,12 @@
 /* eslint no-unused-vars: off */
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 
-export type Channels = 'ipc-example' | 'window.close' | 'window.minimize' | 'window.maximize' | 'window.unmaximize' | 'window.opacity' | 'pip.create' | 'pip.video_url' | 'pip.id';
+export type pingChannel = 'ipc-example';
+export type windowChannel = 'window.close' | 'window.minimize' | 'window.maximize' | 'window.unmaximize' | 'window.opacity';
+export type pipChannel = 'pip.create' | 'pip.video_url' | 'pip.id';
+export type controlChannel = 'control.opacity';
+
+export type Channels = pingChannel | windowChannel | pipChannel | controlChannel;
 
 const electronHandler = {
   ipcRenderer: {
@@ -60,6 +65,11 @@ const electronHandler = {
       return () => {
         ipcRenderer.removeListener('pip.id', subscription);
       };
+    }
+  },
+  control: {
+    setOpacity(opacity: number) {
+      ipcRenderer.send('control.opacity', opacity);
     }
   }
 };

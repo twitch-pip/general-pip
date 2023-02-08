@@ -7,6 +7,8 @@ import RangeBar from './RangeBar';
 import { useEffect, useState } from 'react';
 
 function ControlBar() {
+  const { ipcRenderer, control } = window.electron;
+
   const [volume, setVolume] = useState(0);
   const [opacity, setOpacity] = useState(100);
   const [play, setPlay] = useState(false);
@@ -16,6 +18,12 @@ function ControlBar() {
     // sound default value
     // current default value
   })
+
+  useEffect(() => {
+    console.log("opacity", opacity);
+    console.log(control);
+    control.setOpacity(opacity / 100);
+  }, [opacity]);
 
   return (
     <>

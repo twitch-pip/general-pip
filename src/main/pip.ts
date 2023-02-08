@@ -13,6 +13,7 @@ export function createPIP(id: string, url: string) {
     show: false,
   }, '/pip');
   const control = createWindow({
+    parent: pip,
     width: 640,
     height: 120,
     frame: false,
@@ -33,8 +34,8 @@ export function createPIP(id: string, url: string) {
   pip.on('move', syncControl);
 
   pip.on("closed", () => {
-    if (!control?.isDestroyed())
-      control.close();
+    // if (!control?.isDestroyed())
+    //   control.close();
     PIPWindows.delete(id);
   });
 
@@ -46,6 +47,7 @@ export function createPIP(id: string, url: string) {
 
   control.on('ready-to-show', () => {
     control.webContents.send('pip.id', id);
+    control.setAlwaysOnTop(false);
     control.show();
   });
 
