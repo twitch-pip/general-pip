@@ -1,13 +1,16 @@
 import { BrowserWindow } from "electron";
 import createWindow from "./window";
 
-export function createPIP() {
+export let PIPWindows: Map<string, { pip: BrowserWindow; control: BrowserWindow }> = new Map();
+
+export function createPIP(id: string, url: string) {
   const pip = createWindow({
     width: 640,
     height: 360,
     frame: false,
     hasShadow: false,
     alwaysOnTop: true,
+    show: false,
   }, '/pip');
   const control = createWindow({
     width: 640,
@@ -16,6 +19,7 @@ export function createPIP() {
     hasShadow: false,
     movable: false,
     resizable: false,
+    show: false,
   }, '/control');
   pip.setAspectRatio(16 / 9);
 
@@ -31,5 +35,19 @@ export function createPIP() {
   pip.on("closed", () => {
     if (!control?.isDestroyed())
       control.close();
+    PIPWindows.delete(id);
   });
+
+  pip.on('ready-to-show', () => {
+    pip.webContents.send('pip.video_url', url);
+    pip.webContents.send('pip.id', id);
+    pip.show();
+  });
+
+  control.on('ready-to-show', () => {
+    control.webContents.send('pip.id', id);
+    control.show();
+  });
+
+  PIPWindows.set(id, { pip, control });
 }

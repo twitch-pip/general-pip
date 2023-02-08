@@ -16,6 +16,7 @@ import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
 import './ipc';
+import './clipboard';
 
 class AppUpdater {
   constructor() {

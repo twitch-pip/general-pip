@@ -11,11 +11,23 @@ export default class Base {
     throw new Error('Not implemented');
   }
 
-  static stream(url: string): ReadableStream {
+  static async videoUrl(url: string): Promise<string> {
     throw new Error('Not implemented');
   }
 
-  static pipe(url: string, dest: WritableStream): void {
-    this.stream(url).pipeTo(dest);
+  static async videoOnlyUrl(url: string): Promise<string> {
+    throw new Error('Not implemented');
+  }
+
+  static async audioOnlyUrl(url: string): Promise<string> {
+    throw new Error('Not implemented');
+  }
+
+  static stream(url: string): NodeJS.ReadableStream {
+    throw new Error('Not implemented');
+  }
+
+  static pipe(url: string, dest: NodeJS.WritableStream): void {
+    this.stream(url).pipe(dest);
   }
 }

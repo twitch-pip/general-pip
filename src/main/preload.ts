@@ -2,7 +2,7 @@
 /* eslint no-unused-vars: off */
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 
-export type Channels = 'ipc-example';
+export type Channels = 'ipc-example' | 'window.close' | 'window.minimize' | 'window.maximize' | 'window.unmaximize' | 'window.opacity' | 'pip.create' | 'pip.video_url' | 'pip.id';
 
 const electronHandler = {
   ipcRenderer: {
@@ -42,6 +42,24 @@ const electronHandler = {
   pip: {
     create() {
       ipcRenderer.send('pip.create');
+    },
+    onVideoUrlUpdate(func: (url: string) => void) {
+      const subscription = (_event: IpcRendererEvent, url: string) =>
+        func(url);
+      ipcRenderer.on('pip.video_url', subscription);
+
+      return () => {
+        ipcRenderer.removeListener('pip.video_url', subscription);
+      };
+    },
+    onIdUpdate(func: (id: string) => void) {
+      const subscription = (_event: IpcRendererEvent, id: string) =>
+        func(id);
+      ipcRenderer.on('pip.id', subscription);
+
+      return () => {
+        ipcRenderer.removeListener('pip.id', subscription);
+      };
     }
   }
 };
