@@ -6,6 +6,7 @@ function Pip() {
     <>
       <div className={styles.pip}>
         <img src={close} onClick={() => window.electron.window.close()} alt="닫기" />
+        <video />
       </div>
     </>
   )
