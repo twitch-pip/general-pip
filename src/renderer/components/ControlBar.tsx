@@ -15,11 +15,6 @@ function ControlBar() {
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
-    // sound default value
-    // current default value
-  })
-
-  useEffect(() => {
     control.setOpacity(opacity / 100);
   }, [opacity]);
 
@@ -44,10 +39,10 @@ function ControlBar() {
     <>
       <div className={styles.control}>
         <div className={styles.control_wrapper}>
-          <RangeBar value={current} max={10000} onRangeChanged={onRangeChanged} />
+          <RangeBar barType={'circle'} value={current} max={10000} onRangeChanged={onRangeChanged} />
+          <img className={styles.control_play} onClick={() => setPlay(!play)} src={play ? PauseImg : PlayImg} alt="재생" />
         </div>
         <div className={styles.control_wrapper}>
-          <img className={styles.control_play} onClick={() => setPlay(!play)} src={play ? PauseImg : PlayImg} alt="재생" />
           <div className={styles.control_wrapper}>
             <img src={SoundImg} alt="음량" />
             <RangeBar value={volume} onRangeChanged={setVolume} />

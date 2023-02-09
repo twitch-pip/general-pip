@@ -9,36 +9,49 @@
 
     input {
       position: absolute;
-      top: -7px;
+      top: -6px;
       width: 100%;
       appearance: none;
       background: none;
       pointer-events: none;
     }
-
-    input::-webkit-slider-thumb {
-      width: 15px;
-      height: 15px;
-      border-radius: 50%;
-      border: 1px solid #b0b0b0;
-      background-color: white;
-      appearance: none;
-      pointer-events: auto;
-      cursor: pointer;
-    }
   }
 
   &_slide {
     position: relative;
-    height: 2px;
-    background: #ddd;
+    height: 4px;
+    background: #3d3d3d;
     border-radius: 10px;
     flex: 1;
 
+    &_cylinder {
+      &::-webkit-slider-thumb {
+        width: 6px;
+        height: 16px;
+        border-radius: 8px;
+        background-color: white;
+        appearance: none;
+        pointer-events: auto;
+        cursor: pointer;
+      }
+    }
+
+    &_circle {
+      &::-webkit-slider-thumb {
+        width: 14px;
+        height: 14px;
+        border-radius: 8px;
+        background-color: white;
+        appearance: none;
+        pointer-events: auto;
+        cursor: pointer;
+      }
+    }
+
     &_inner {
       position: absolute;
-      height: 2px;
-      background: #000;
+      height: 4px;
+      background: #BCBCBC;
       border-radius: 10px;
     }
   }

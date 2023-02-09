@@ -1,0 +1,39 @@
+.window {
+  -webkit-app-region: drag;
+  display: flex;
+  height: 38px;
+  justify-content: flex-end;
+
+  width: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 1;
+
+  &_button {
+    &_wrapper {
+      display: flex;
+      -webkit-app-region: none;
+    }
+
+    z-index: 3;
+    width: 50px;
+    height: 100%;
+    cursor: pointer;
+    background-color: transparent;
+
+    &:nth-child(3) {
+      &:hover {
+        background-color: rgb(218, 2, 2);
+      }
+    }
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    img {
+      width: 16px;
+      height: 16px;
+    }
+  }
+}
