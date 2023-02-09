@@ -16,7 +16,7 @@ function TitleBar() {
   }
 
   function close() {
-    window.electron.window.close();
+    window.electron.window.hide();
   }
 
   return (

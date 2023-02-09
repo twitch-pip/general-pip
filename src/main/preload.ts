@@ -4,7 +4,7 @@ import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 
 export type pingChannel = 'ipc-example';
 export type appChannel = 'app.getVersion' | 'app.quit' | 'app.platform';
-export type windowChannel = 'window.close' | 'window.minimize' | 'window.maximize' | 'window.unmaximize' | 'window.opacity' | 'window.isMaximizable' | 'window.isMaximized' | 'window.isMinimizable' | 'window.isMinimized';
+export type windowChannel = 'window.close' | 'window.minimize' | 'window.maximize' | 'window.unmaximize' | 'window.opacity' | 'window.hide' | 'window.show' | 'window.isMaximizable' | 'window.isMaximized' | 'window.isMinimizable' | 'window.isMinimized';
 export type pipChannel = 'pip.create' | 'pip.video_url' | 'pip.id';
 export type controlChannel = 'control.opacity' | 'control.volume' | 'control.current' | 'control.play';
 
@@ -54,6 +54,12 @@ const electronHandler = {
     },
     opacity(opacity: number) {
       ipcRenderer.send('window.opacity', opacity);
+    },
+    hide() {
+      ipcRenderer.send('window.hide');
+    },
+    show() {
+      ipcRenderer.send('window.show');
     },
     isMaximizable() {
       return ipcRenderer.invoke('window.isMaximizable');

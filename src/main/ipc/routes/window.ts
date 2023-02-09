@@ -37,6 +37,20 @@ export default class Window {
     window.setOpacity(opacity);
   }
 
+  @Channel('window', 'hide')
+  hide(event: IpcMainInvokeEvent, ...args: any[]) {
+    const window = BrowserWindow.fromWebContents(event.sender);
+    if (!window || window.isDestroyed()) return;
+    window.hide();
+  }
+
+  @Channel('window', 'show')
+  show(event: IpcMainInvokeEvent, ...args: any[]) {
+    const window = BrowserWindow.fromWebContents(event.sender);
+    if (!window || window.isDestroyed()) return;
+    window.show();
+  }
+
   @Channel('window', 'isMaximizable', 'handle')
   isMaximizable(event: IpcMainInvokeEvent, ...args: any[]) {
     const window = BrowserWindow.fromWebContents(event.sender);

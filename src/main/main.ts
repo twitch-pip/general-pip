@@ -16,6 +16,7 @@ import { resolveHtmlPath } from './util';
 
 import './ipc';
 import './clipboard';
+import TrayBuilder from './tray';
 
 class AppUpdater {
   constructor() {
@@ -100,6 +101,9 @@ const createWindow = async () => {
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
+
+  const trayBuilder = new TrayBuilder(mainWindow);
+  trayBuilder.buildTray();
 
   // Open urls in the user's browser
   mainWindow.webContents.setWindowOpenHandler((edata) => {
