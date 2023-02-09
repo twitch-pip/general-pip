@@ -32,23 +32,31 @@ export function createPIP(id: string, url: string) {
 
   pip.on('resize', syncControl);
   pip.on('move', syncControl);
-  pip.on('move', () => {
-    const delta = 10;
+  pip.on('will-move', (event, newBounds) => {
 
     const display = screen.getDisplayMatching(pip.getBounds());
-    const pipXs = [pip.getBounds().x, pip.getBounds().x + pip.getBounds().width];
-    const pipYs = [pip.getBounds().y, pip.getBounds().y + pip.getBounds().height];
+    const delta = Math.min(display.workAreaSize.height, display.workAreaSize.width) / 100;
+    const x = newBounds.x;
+    const y = newBounds.y;
+    const width = pip.getBounds().width;
+    const height = pip.getBounds().height;
+    const pipXs = [x, x + width];
+    const pipYs = [y, y + height];
     const displayXs = [display.workArea.x, display.workArea.x + display.workArea.width];
     const displayYs = [display.workArea.y, display.workArea.y + display.workArea.height];
-    pip.setBounds({ x: pip.getBounds().x, y: pip.getBounds().y });
+
+    let newX = x;
+    let newY = y;
+
     for (const pipX of pipXs)
       for (const displayX of displayXs)
         if (Math.abs(pipX - displayX) < delta)
-          pip.setBounds({ x: Math.max(0, displayX - pip.getBounds().width), y: pip.getBounds().y });
+          newX = Math.max(0, displayX - width);
     for (const pipY of pipYs)
       for (const displayY of displayYs)
         if (Math.abs(pipY - displayY) < delta)
-          pip.setBounds({ x: pip.getBounds().x, y: Math.max(0, displayY - pip.getBounds().height) });
+          newY = Math.max(0, displayY - height);
+    pip.setBounds({ x: newX, y: newY });
     syncControl();
   });
 
