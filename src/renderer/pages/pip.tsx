@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import close from '../../../assets/images/close.svg'
-import styles from '../styles/pip.module.scss'
+import close from '../../../assets/images/close.svg';
+import styles from '../styles/pip.module.scss';
 
 const { ipcRenderer, control } = window.electron;
 
@@ -20,19 +20,21 @@ function Pip() {
 
   ipcRenderer.on('control.play', (state) => {
     const video = document.querySelector('video');
-    if (video) {
-      if (state) {
-        video.play();
-      } else {
-        video.pause();
+    try {
+      if (video) {
+        if (state) {
+          video.play()?.catch(() => void(0));
+        } else {
+          video.pause();
+        }
       }
-    }
+    } catch (e) {}
   });
 
   ipcRenderer.on('control.current', (current) => {
     const video = document.querySelector('video');
     if (video) {
-      video.currentTime = (current as number) * video.duration / 100;
+      video.currentTime = ((current as number) * video.duration) / 100;
     }
   });
 
@@ -42,7 +44,7 @@ function Pip() {
     if (video) {
       if (video.currentTime - prevTime > 0.5) {
         prevTime = video.currentTime;
-        control.setCurrent(video.currentTime / video.duration * 100);
+        control.setCurrent((video.currentTime / video.duration) * 100);
       }
     }
   }
@@ -50,11 +52,15 @@ function Pip() {
   return (
     <>
       <div className={styles.pip}>
-        <img src={close} onClick={() => window.electron.window.close()} alt="닫기" />
+        <img
+          src={close}
+          onClick={window.electron.window.close}
+          alt="닫기"
+        />
         <video src={url} autoPlay={true} onTimeUpdate={onTimeUpdate} />
       </div>
     </>
-  )
+  );
 }
 
 export default Pip;
