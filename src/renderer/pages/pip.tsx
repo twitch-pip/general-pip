@@ -23,7 +23,7 @@ function Pip() {
     try {
       if (video) {
         if (state) {
-          video.play()?.catch(null);
+          video.play()?.catch(() => void(0));
         } else {
           video.pause();
         }
