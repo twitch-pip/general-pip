@@ -36,4 +36,32 @@ export default class Window {
     if (!window || window.isDestroyed()) return;
     window.setOpacity(opacity);
   }
+
+  @Channel('window', 'isMaximizable', 'handle')
+  isMaximizable(event: IpcMainInvokeEvent, ...args: any[]) {
+    const window = BrowserWindow.fromWebContents(event.sender);
+    if (!window || window.isDestroyed()) return;
+    return window.isMaximizable();
+  }
+
+  @Channel('window', 'isMaximized', 'handle')
+  isMaximized(event: IpcMainInvokeEvent, ...args: any[]) {
+    const window = BrowserWindow.fromWebContents(event.sender);
+    if (!window || window.isDestroyed()) return;
+    return window.isMaximized();
+  }
+
+  @Channel('window', 'isMinimizable', 'handle')
+  isMinimizable(event: IpcMainInvokeEvent, ...args: any[]) {
+    const window = BrowserWindow.fromWebContents(event.sender);
+    if (!window || window.isDestroyed()) return;
+    return window.isMinimizable();
+  }
+
+  @Channel('window', 'isMinimized', 'handle')
+  isMinimized(event: IpcMainInvokeEvent, ...args: any[]) {
+    const window = BrowserWindow.fromWebContents(event.sender);
+    if (!window || window.isDestroyed()) return;
+    return window.isMinimized();
+  }
 }
