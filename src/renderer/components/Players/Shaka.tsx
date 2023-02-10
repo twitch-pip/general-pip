@@ -1,9 +1,10 @@
+import { useEffect } from 'react';
+import shaka from 'shaka-player';
+import { PlayerType } from './Base';
 
-import { useEffect } from "react";
-import shaka from "shaka-player";
-
-function Shaka() {
-  const manifestUri = 'https://storage.googleapis.com/shaka-demo-assets/sintel/dash.mpd';
+const ShakaPlayer: PlayerType = function () {
+  const manifestUri =
+    'https://storage.googleapis.com/shaka-demo-assets/sintel/dash.mpd';
 
   useEffect(() => {
     shaka.polyfill.installAll();
@@ -18,19 +19,12 @@ function Shaka() {
 
       try {
         await player.load(manifestUri);
-      } catch(e) {
+      } catch (e) {
         console.error(e);
       }
     })();
-  })
-  return (
-    <video
-      id="video"
-      width="640"
-      controls
-      autoPlay
-    ></video>
-  );
-}
+  });
+  return <video id="video" width="640" controls autoPlay></video>;
+};
 
-export default Shaka;
+export default ShakaPlayer;

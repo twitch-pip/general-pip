@@ -5,6 +5,7 @@ import DefaultPlayer from '../components/Players/Default';
 import { PlayerType } from 'renderer/components/Players/Base';
 import HLSPlayer from 'renderer/components/Players/Hls';
 import React from 'react';
+import CrossProcessExports from 'electron';
 
 const { ipcRenderer, control } = window.electron;
 
@@ -16,7 +17,11 @@ const Player = (url: string): React.ReactElement => {
   }
 };
 
-function Pip() {
+interface PropType {
+  player?: PlayerType;
+}
+
+function Pip(props: PropType) {
   const [url, setUrl] = useState<string>();
   const [paused, setPaused] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -48,7 +53,6 @@ function Pip() {
     <>
       <div className={styles.pip}>
         <img src={close} onClick={window.electron.window.close} alt="닫기" />
-        {player}
       </div>
     </>
   );
