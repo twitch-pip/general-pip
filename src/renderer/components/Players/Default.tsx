@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { PlayerType } from './Base';
 
 interface PropType {
   source?: string;
@@ -10,7 +11,7 @@ interface PropType {
   onDurationChange?: (duration: number) => any;
 }
 
-function Player(props: PropType) {
+const DefaultPlayer: PlayerType = function (props: PropType) {
   useEffect(() => {
     const video = document.querySelector('video');
     if (video) {
@@ -48,6 +49,6 @@ function Player(props: PropType) {
       }}
     />
   );
-}
+};
 
-export default Player;
+export default DefaultPlayer;
