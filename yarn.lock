@@ -4299,10 +4299,9 @@ electron-updater@^5.3.0:
     semver "^7.3.5"
     typed-emitter "^2.1.0"
 
-electron@^22.2.0:
+"electron@https://github.com/castlabs/electron-releases#v22.2.0+wvcus":
   version "22.2.0"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-22.2.0.tgz#1aa321415d8b8021a4b0807641f0ad56028feaf5"
-  integrity sha512-puRZSF2vWJ4pz3oetL5Td8LcuivTWz3MoAk/gjImHSN1B/2VJNEQlw1jGdkte+ppid2craOswE2lmCOZ7SwF1g==
+  resolved "https://github.com/castlabs/electron-releases#91af2f1d1b90394b656d769e935c7e025281e2ba"
   dependencies:
     "@electron/get" "^2.0.0"
     "@types/node" "^16.11.26"
@@ -8773,10 +8772,10 @@ setprototypeof@1.2.0:
   resolved "https://registry.yarnpkg.com/setprototypeof/-/setprototypeof-1.2.0.tgz#66c9a24a73f9fc28cbe66b09fed3d33dcaf1b424"
   integrity sha512-E5LDX7Wrp85Kil5bhZv46j8jOeboKq5JMmYM3gVGdGH8xFpPWXUMsNrlODCrkoxMEeNi/XZIwuRvY4XNwYMJpw==
 
-shaka-player@^4.3.4:
-  version "4.3.4"
-  resolved "https://registry.yarnpkg.com/shaka-player/-/shaka-player-4.3.4.tgz#97c7cb73743884e55a4855f5efe4d116aff83848"
-  integrity sha512-fF90r/57Oxk+SV2cnoEpJxNujNj1gJkudKXVbXEBhgxh5qYu5gdFU+nT2N7jMN71KxQdtXo1NOqdNphudLEEug==
+shaka-player@4.2.8:
+  version "4.2.8"
+  resolved "https://registry.yarnpkg.com/shaka-player/-/shaka-player-4.2.8.tgz#cfeec75e22bd95c43c713a5f26c53032226eb5ed"
+  integrity sha512-NPXyQABirnfXD2D8SYkY3Qb3sc4tn2YMdBqjVUWttWxY7KH3r8uHIYj2XUwlmKhIAxOmCyUESFxN2tpy2mN4nA==
   dependencies:
     eme-encryption-scheme-polyfill "^2.1.1"
 

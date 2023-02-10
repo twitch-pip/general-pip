@@ -1,4 +1,16 @@
+import { DRMType } from '../../@types/drm';
+
+export interface VideoWithDRM {
+  source: string;
+  drmType: string;
+  licenseUri: string;
+  metadata: any;
+  token: string;
+}
+
 export default class Base {
+  static readonly drmType: DRMType | undefined = undefined;
+
   static get id(): string {
     throw new Error('Not implemented');
   }
@@ -12,6 +24,10 @@ export default class Base {
   }
 
   static async videoUrl(url: string): Promise<string> {
+    throw new Error('Not implemented');
+  }
+
+  static async videoWithDrm(url: string): Promise<VideoWithDRM> {
     throw new Error('Not implemented');
   }
 

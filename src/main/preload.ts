@@ -4,11 +4,31 @@ import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 
 export type pingChannel = 'ipc-example';
 export type appChannel = 'app.getVersion' | 'app.quit' | 'app.platform';
-export type windowChannel = 'window.close' | 'window.minimize' | 'window.maximize' | 'window.unmaximize' | 'window.opacity' | 'window.hide' | 'window.show' | 'window.isMaximizable' | 'window.isMaximized' | 'window.isMinimizable' | 'window.isMinimized';
-export type pipChannel = 'pip.create' | 'pip.video_url' | 'pip.id';
-export type controlChannel = 'control.opacity' | 'control.volume' | 'control.current' | 'control.play';
+export type windowChannel =
+  | 'window.close'
+  | 'window.minimize'
+  | 'window.maximize'
+  | 'window.unmaximize'
+  | 'window.opacity'
+  | 'window.hide'
+  | 'window.show'
+  | 'window.isMaximizable'
+  | 'window.isMaximized'
+  | 'window.isMinimizable'
+  | 'window.isMinimized';
+export type pipChannel = 'pip.create' | 'pip.video_url' | 'pip.id' | 'pip.drm';
+export type controlChannel =
+  | 'control.opacity'
+  | 'control.volume'
+  | 'control.current'
+  | 'control.play';
 
-export type Channels = pingChannel | appChannel | windowChannel | pipChannel | controlChannel;
+export type Channels =
+  | pingChannel
+  | appChannel
+  | windowChannel
+  | pipChannel
+  | controlChannel;
 
 const electronHandler = {
   ipcRenderer: {
@@ -72,15 +92,14 @@ const electronHandler = {
     },
     isMinimized() {
       return ipcRenderer.invoke('window.isMinimized');
-    }
+    },
   },
   pip: {
     create() {
       ipcRenderer.send('pip.create');
     },
     onVideoUrlUpdate(func: (url: string) => void) {
-      const subscription = (_event: IpcRendererEvent, url: string) =>
-        func(url);
+      const subscription = (_event: IpcRendererEvent, url: string) => func(url);
       ipcRenderer.on('pip.video_url', subscription);
 
       return () => {
@@ -88,14 +107,13 @@ const electronHandler = {
       };
     },
     onIdUpdate(func: (id: string) => void) {
-      const subscription = (_event: IpcRendererEvent, id: string) =>
-        func(id);
+      const subscription = (_event: IpcRendererEvent, id: string) => func(id);
       ipcRenderer.on('pip.id', subscription);
 
       return () => {
         ipcRenderer.removeListener('pip.id', subscription);
       };
-    }
+    },
   },
   control: {
     setOpacity(opacity: number) {
@@ -109,8 +127,8 @@ const electronHandler = {
     },
     setPlay(state: boolean) {
       ipcRenderer.send('control.play', state);
-    }
-  }
+    },
+  },
 };
 
 contextBridge.exposeInMainWorld('electron', electronHandler);
