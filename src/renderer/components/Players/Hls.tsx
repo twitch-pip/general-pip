@@ -15,9 +15,9 @@ interface PropType {
 const HLSPlayer: PlayerType = function (props: PropType) {
   useEffect(() => {
     const video = document.querySelector('video');
-    if (video) {
+    if (video && props.source) {
       const hls = new Hls();
-      hls.loadSource(props.source as string);
+      hls.loadSource(props.source);
       hls.attachMedia(video);
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
         if (props.autoPlay) video.play();

@@ -1,27 +1,31 @@
-import { BrowserWindow, screen } from "electron";
-import createWindow from "./window";
+import { BrowserWindow, screen } from 'electron';
+import createWindow from './window';
 
-export let PIPWindows: Map<string, { pip: BrowserWindow; control: BrowserWindow }> = new Map();
-
-export function createPIP(id: string, url: string) {
-  const control = createWindow({
-    width: 640,
-    height: 120,
-    frame: false,
-    hasShadow: false,
-    movable: false,
-    resizable: false,
-    show: false,
-  }, '/control');
-  const pip = createWindow({
-    parent: control,
-    width: 640,
-    height: 360,
-    frame: false,
-    hasShadow: false,
-    alwaysOnTop: true,
-    show: false,
-  }, '/pip');
+export function createPIP(path: string, url: string) {
+  const control = createWindow(
+    {
+      width: 640,
+      height: 120,
+      frame: false,
+      hasShadow: false,
+      movable: false,
+      resizable: false,
+      show: false,
+    },
+    '/control'
+  );
+  const pip = createWindow(
+    {
+      parent: control,
+      width: 640,
+      height: 360,
+      frame: false,
+      hasShadow: false,
+      alwaysOnTop: true,
+      show: false,
+    },
+    `/pip/${path}`
+  );
   pip.setAspectRatio(16 / 9);
 
   function syncControl() {
@@ -33,17 +37,23 @@ export function createPIP(id: string, url: string) {
   pip.on('resize', syncControl);
   pip.on('move', syncControl);
   pip.on('will-move', (event, newBounds) => {
-
     const display = screen.getDisplayMatching(pip.getBounds());
-    const delta = Math.min(display.workAreaSize.height, display.workAreaSize.width) / 100;
+    const delta =
+      Math.min(display.workAreaSize.height, display.workAreaSize.width) / 100;
     const x = newBounds.x;
     const y = newBounds.y;
     const width = pip.getBounds().width;
     const height = pip.getBounds().height;
     const pipXs = [x, x + width];
     const pipYs = [y, y + height];
-    const displayXs = [display.workArea.x, display.workArea.x + display.workArea.width];
-    const displayYs = [display.workArea.y, display.workArea.y + display.workArea.height];
+    const displayXs = [
+      display.workArea.x,
+      display.workArea.x + display.workArea.width,
+    ];
+    const displayYs = [
+      display.workArea.y,
+      display.workArea.y + display.workArea.height,
+    ];
 
     let newX = x;
     let newY = y;
@@ -62,27 +72,24 @@ export function createPIP(id: string, url: string) {
 
   screen.on('display-metrics-changed', () => {
     const display = screen.getDisplayMatching(pip.getBounds());
-    pip.setBounds({ width: display.workAreaSize.width, height: display.workAreaSize.height / 2 });
+    pip.setBounds({
+      width: display.workAreaSize.width,
+      height: display.workAreaSize.height / 2,
+    });
     syncControl();
   });
 
-  pip.on("closed", () => {
-    if (!control?.isDestroyed())
-      control.close();
-    PIPWindows.delete(id);
+  pip.on('closed', () => {
+    if (!control?.isDestroyed()) control.close();
   });
 
   pip.on('ready-to-show', () => {
     pip.webContents.send('pip.video_url', url);
-    pip.webContents.send('pip.id', id);
     pip.show();
   });
 
   control.on('ready-to-show', () => {
-    control.webContents.send('pip.id', id);
     control.setAlwaysOnTop(false);
     control.show();
   });
-
-  PIPWindows.set(id, { pip, control });
 }

@@ -16,7 +16,7 @@ setInterval(() => {
 async function decision(text: string) {
   const find = plugins.find((plugin) => plugin.validate(text));
   if (find) {
-    console.log(find.identifier(text), await find.videoUrl(text));
-    createPIP(find.identifier(text), await find.videoUrl(text));
+    console.log(find);
+    createPIP(find.id, await find.videoUrl(text));
   }
 }

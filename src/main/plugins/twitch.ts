@@ -26,7 +26,7 @@ export default class Twitch extends Base {
   }
 
   static override identifier(url: string) {
-    return `youtube-${this.streamerName(url)}`;
+    return `${this.id}-${this.streamerName(url)}`;
   }
 
   static override async videoUrl(url: string) {
