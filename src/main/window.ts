@@ -5,6 +5,7 @@ import path from 'path';
 export default function createWindow(
   options?: BrowserWindowConstructorOptions,
   routePath = '',
+  queryString = ''
 ): BrowserWindow {
   const window = new BrowserWindow({
     show: false,
@@ -19,7 +20,7 @@ export default function createWindow(
     ...options,
   });
 
-  window.loadURL(resolveHtmlPath('index.html') + `#${routePath}`);
+  window.loadURL(resolveHtmlPath('index.html') + `?${queryString}#${routePath}`);
 
   window.on('ready-to-show', () => {
     window.show();

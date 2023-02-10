@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import close from '../../../assets/images/close.svg';
 import styles from '../styles/pip.module.scss';
 import Player from '../components/Players/Default';
@@ -11,6 +11,7 @@ function Pip() {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(0);
+
 
   ipcRenderer.on('pip.video_url', (url) => setUrl(url as string));
   ipcRenderer.on('control.volume', (volume) => setVolume(volume as number));

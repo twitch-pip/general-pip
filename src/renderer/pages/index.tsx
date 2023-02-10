@@ -4,6 +4,7 @@ import styles from '../styles/index.module.scss'
 import twitchImg from '../../../assets/logos/twitch.svg'
 import youtubeImg from '../../../assets/logos/youtube.svg'
 import laftelImg from '../../../assets/logos/laftel.svg'
+import { Link } from 'react-router-dom';
 
 function $(...classes: string[]) {
   return classes.join(" ");
