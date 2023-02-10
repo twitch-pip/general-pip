@@ -1,3 +1,4 @@
+import Hls from 'hls.js';
 import { useEffect } from 'react';
 import { PlayerType } from './Base';
 
@@ -11,7 +12,18 @@ interface PropType {
   onDurationChange?: (duration: number) => any;
 }
 
-const DefaultPlayer: PlayerType = function (props: PropType) {
+const HLSPlayer: PlayerType = function (props: PropType) {
+  useEffect(() => {
+    const video = document.querySelector('video');
+    if (video) {
+      const hls = new Hls();
+      hls.loadSource(props.source as string);
+      hls.attachMedia(video);
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        if (props.autoPlay) video.play();
+      });
+    }
+  }, [props.source]);
   useEffect(() => {
     const video = document.querySelector('video');
     if (video) {
@@ -37,7 +49,6 @@ const DefaultPlayer: PlayerType = function (props: PropType) {
 
   return (
     <video
-      src={props.source}
       autoPlay={props.autoPlay}
       onTimeUpdate={(event) => {
         props.onCurrentTimeUpdate?.(
@@ -51,4 +62,4 @@ const DefaultPlayer: PlayerType = function (props: PropType) {
   );
 };
 
-export default DefaultPlayer;
+export default HLSPlayer;

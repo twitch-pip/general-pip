@@ -1,17 +1,29 @@
 import { useEffect, useState } from 'react';
 import close from '../../../assets/images/close.svg';
 import styles from '../styles/pip.module.scss';
-import Player from '../components/Players/Default';
+import DefaultPlayer from '../components/Players/Default';
+import { PlayerType } from 'renderer/components/Players/Base';
+import HLSPlayer from 'renderer/components/Players/Hls';
+import React from 'react';
 
 const { ipcRenderer, control } = window.electron;
 
+const Player = (url: string): React.ReactElement => {
+  if (url.includes('m3u8')) {
+    return <HLSPlayer source={url} />;
+  } else {
+    return <DefaultPlayer source={url} />;
+  }
+};
+
 function Pip() {
-  const [url, setUrl] = useState<string | undefined>(undefined);
+  const [url, setUrl] = useState<string>();
   const [paused, setPaused] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(0);
 
+  const [player, setPlayer] = useState<React.ReactElement>();
 
   ipcRenderer.on('pip.video_url', (url) => setUrl(url as string));
   ipcRenderer.on('control.volume', (volume) => setVolume(volume as number));
@@ -28,19 +40,15 @@ function Pip() {
     }
   }
 
+  useEffect(() => {
+    if (url) setPlayer(Player(url));
+  }, [url]);
+
   return (
     <>
       <div className={styles.pip}>
         <img src={close} onClick={window.electron.window.close} alt="닫기" />
-        <Player
-          source={url}
-          autoPlay={true}
-          paused={paused}
-          volume={volume}
-          currentTime={currentTime}
-          onCurrentTimeUpdate={onTimeUpdate}
-          onDurationChange={setDuration}
-        />
+        {player}
       </div>
     </>
   );

@@ -1,7 +1,7 @@
-import { clipboard } from "electron";
-import { glob } from "glob";
-import plugins from "./plugins";
-import { createPIP } from "./pip";
+import { clipboard } from 'electron';
+import { glob } from 'glob';
+import plugins from './plugins';
+import { createPIP } from './pip';
 
 let lastText = clipboard.readText();
 setInterval(() => {
@@ -16,6 +16,7 @@ setInterval(() => {
 async function decision(text: string) {
   const find = plugins.find((plugin) => plugin.validate(text));
   if (find) {
+    console.log(find.identifier(text), await find.videoUrl(text));
     createPIP(find.identifier(text), await find.videoUrl(text));
   }
 }
