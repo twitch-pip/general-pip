@@ -3,27 +3,24 @@ import shaka from 'shaka-player';
 import { PlayerType, PropType } from './Base';
 
 const ShakaPlayer: PlayerType = function (props: PropType) {
-  const manifestUri =
-    'https://storage.googleapis.com/shaka-demo-assets/sintel/dash.mpd';
-
   useEffect(() => {
     shaka.polyfill.installAll();
 
     (async () => {
       const video = document.querySelector('video');
-      console.log(video);
-      const player = new shaka.Player(video);
-      player.addEventListener('error', (event) => {
-        console.error(event);
-      });
+      if (video && props.source) {
+        const player = new shaka.Player(video);
 
-      try {
-        await player.load(manifestUri);
-      } catch (e) {
-        console.error(e);
+        player.addEventListener('error', (event) => {
+          console.error(event);
+        });
+
+        player.load(props.source).catch((e) => {
+          console.error(e);
+        });
       }
     })();
-  });
+  }, [props.source]);
   return <video id="video" width="640" controls autoPlay></video>;
 };
 
