@@ -1,63 +1,45 @@
 import { useState } from 'react';
 import close from '../../../assets/images/close.svg';
 import styles from '../styles/pip.module.scss';
+import Player from '../components/Players/Default';
 
 const { ipcRenderer, control } = window.electron;
 
 function Pip() {
   const [url, setUrl] = useState<string | undefined>(undefined);
+  const [paused, setPaused] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [volume, setVolume] = useState(0);
 
-  ipcRenderer.on('pip.video_url', (url) => {
-    setUrl(url as string);
-  });
-
-  ipcRenderer.on('control.volume', (volume) => {
-    const video = document.querySelector('video');
-    if (video) {
-      video.volume = volume as number;
-    }
-  });
-
-  ipcRenderer.on('control.play', (state) => {
-    const video = document.querySelector('video');
-    try {
-      if (video) {
-        if (state) {
-          video.play()?.catch(() => void(0));
-        } else {
-          video.pause();
-        }
-      }
-    } catch (e) {}
-  });
-
-  ipcRenderer.on('control.current', (current) => {
-    const video = document.querySelector('video');
-    if (video) {
-      video.currentTime = ((current as number) * video.duration) / 100;
-    }
-  });
+  ipcRenderer.on('pip.video_url', (url) => setUrl(url as string));
+  ipcRenderer.on('control.volume', (volume) => setVolume(volume as number));
+  ipcRenderer.on('control.play', (state) => setPaused(!(state as boolean)));
+  ipcRenderer.on('control.current', (current) =>
+    setCurrentTime(((current as number) * duration) / 100)
+  );
 
   let prevTime = 0;
-  function onTimeUpdate() {
-    const video = document.querySelector('video');
-    if (video) {
-      if (video.currentTime - prevTime > 0.5) {
-        prevTime = video.currentTime;
-        control.setCurrent((video.currentTime / video.duration) * 100);
-      }
+  function onTimeUpdate(time: number) {
+    if (time - prevTime > 0.5) {
+      prevTime = time;
+      control.setCurrent((time / duration) * 100);
     }
   }
 
   return (
     <>
       <div className={styles.pip}>
-        <img
-          src={close}
-          onClick={window.electron.window.close}
-          alt="닫기"
+        <img src={close} onClick={window.electron.window.close} alt="닫기" />
+        <Player
+          source={url}
+          autoPlay={true}
+          paused={paused}
+          volume={volume}
+          currentTime={currentTime}
+          onCurrentTimeUpdate={onTimeUpdate}
+          onDurationChange={setDuration}
         />
-        <video src={url} autoPlay={true} onTimeUpdate={onTimeUpdate} />
       </div>
     </>
   );
