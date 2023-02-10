@@ -3016,6 +3016,11 @@ binary-extensions@^2.0.0:
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-2.2.0.tgz#75f502eeaf9ffde42fc98829645be4ea76bd9e2d"
   integrity sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==
 
+bitmovin-player@^8.104.0:
+  version "8.104.0"
+  resolved "https://registry.yarnpkg.com/bitmovin-player/-/bitmovin-player-8.104.0.tgz#913ff50f73758bf36ac2df46f66d990ec08d19d6"
+  integrity sha512-S+Ps+1Wp/0K3EJGADBjRP/INdq+QoJbcaZ36GxRH13MLKTlVV/0nHX1STRrbxsfWUPIxleNlzS0NJPw6cvtnyA==
+
 bl@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/bl/-/bl-4.1.0.tgz#451535264182bec2fbbc83a62ab98cf11d9f7b3a"
