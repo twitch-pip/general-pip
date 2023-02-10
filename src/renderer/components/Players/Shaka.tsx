@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import shaka from 'shaka-player';
-import { PlayerType } from './Base';
+import { PlayerType, PropType } from './Base';
 
-const ShakaPlayer: PlayerType = function () {
+const ShakaPlayer: PlayerType = function (props: PropType) {
   const manifestUri =
     'https://storage.googleapis.com/shaka-demo-assets/sintel/dash.mpd';
 

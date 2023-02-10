@@ -1,15 +1,5 @@
 import { useEffect } from 'react';
-import { PlayerType } from './Base';
-
-interface PropType {
-  source?: string;
-  autoPlay?: boolean;
-  paused?: boolean;
-  volume?: number;
-  currentTime?: number;
-  onCurrentTimeUpdate?: (time: number) => any;
-  onDurationChange?: (duration: number) => any;
-}
+import { PlayerType, PropType } from './Base';
 
 const DefaultPlayer: PlayerType = function (props: PropType) {
   useEffect(() => {

@@ -1,8 +1,8 @@
-import styles from '../styles/control.module.scss'
-import PlayImg from '../../../assets/images/play.svg'
-import PauseImg from '../../../assets/images/pause.svg'
-import SoundImg from '../../../assets/images/sound.svg'
-import OpacityImg from '../../../assets/images/opacity.svg'
+import styles from '../styles/control.module.scss';
+import PlayImg from '../../../assets/images/play.svg';
+import PauseImg from '../../../assets/images/pause.svg';
+import SoundImg from '../../../assets/images/sound.svg';
+import OpacityImg from '../../../assets/images/opacity.svg';
 import RangeBar from './RangeBar';
 import { useEffect, useState } from 'react';
 
@@ -27,7 +27,7 @@ function ControlBar() {
   }, [play]);
 
   ipcRenderer.on('control.current', (current) => {
-    setCurrent(current as number * 100);
+    setCurrent((current as number) * 100);
   });
 
   function onRangeChanged(value: number) {
@@ -39,8 +39,18 @@ function ControlBar() {
     <>
       <div className={styles.control}>
         <div className={styles.control_wrapper}>
-          <RangeBar barType={'circle'} value={current} max={10000} onRangeChanged={onRangeChanged} />
-          <img className={styles.control_play} onClick={() => setPlay(!play)} src={play ? PauseImg : PlayImg} alt="재생" />
+          <RangeBar
+            barType={'circle'}
+            value={current}
+            max={10000}
+            onRangeChanged={onRangeChanged}
+          />
+          <img
+            className={styles.control_play}
+            onClick={() => setPlay(!play)}
+            src={play ? PauseImg : PlayImg}
+            alt="재생"
+          />
         </div>
         <div className={styles.control_wrapper}>
           <div className={styles.control_wrapper}>
@@ -54,7 +64,7 @@ function ControlBar() {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 export default ControlBar;

@@ -1,11 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import close from '../../../assets/images/close.svg';
 import styles from '../styles/pip.module.scss';
 import DefaultPlayer from '../components/Players/Default';
 import { PlayerType } from 'renderer/components/Players/Base';
-import HLSPlayer from 'renderer/components/Players/Hls';
-import React from 'react';
-import CrossProcessExports from 'electron';
 
 const { ipcRenderer, control } = window.electron;
 
@@ -49,7 +46,17 @@ function Pip(props: PropType) {
             onCurrentTimeUpdate={onTimeUpdate}
             onDurationChange={setDuration}
           />
-        ) : null}
+        ) : (
+          <DefaultPlayer
+            source={url}
+            autoPlay={true}
+            paused={paused}
+            volume={volume}
+            currentTime={currentTime}
+            onCurrentTimeUpdate={onTimeUpdate}
+            onDurationChange={setDuration}
+          />
+        )}
       </div>
     </>
   );
