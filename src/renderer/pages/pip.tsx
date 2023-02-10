@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import close from '../../../assets/images/close.svg';
 import styles from '../styles/pip.module.scss';
 import DefaultPlayer from '../components/Players/Default';
@@ -16,6 +16,9 @@ function Pip(props: PropType) {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(0);
+  const Player = useMemo(() => {
+    return props.player ?? DefaultPlayer;
+  }, [props.player]);
 
   ipcRenderer.on('pip.video_url', (url) => setUrl(url as string));
   ipcRenderer.on('control.volume', (volume) => setVolume(volume as number));
@@ -36,8 +39,8 @@ function Pip(props: PropType) {
     <>
       <div className={styles.pip}>
         <img src={close} onClick={window.electron.window.close} alt="닫기" />
-        {props.player ? (
-          <props.player
+        {
+          <Player
             source={url}
             autoPlay={true}
             paused={paused}
@@ -46,17 +49,7 @@ function Pip(props: PropType) {
             onCurrentTimeUpdate={onTimeUpdate}
             onDurationChange={setDuration}
           />
-        ) : (
-          <DefaultPlayer
-            source={url}
-            autoPlay={true}
-            paused={paused}
-            volume={volume}
-            currentTime={currentTime}
-            onCurrentTimeUpdate={onTimeUpdate}
-            onDurationChange={setDuration}
-          />
-        )}
+        }
       </div>
     </>
   );
