@@ -95,8 +95,8 @@ const ShakaPlayer: PlayerType = function (props: PropType) {
 
         player
           .load(
-            props.source
-            // 'https://storage.googleapis.com/shaka-demo-assets/sintel-widevine/dash.mpd'
+            // props.source
+            'https://storage.googleapis.com/shaka-demo-assets/sintel-widevine/dash.mpd'
           )
           .then(() => {
             console.log('The video has now been loaded!');
