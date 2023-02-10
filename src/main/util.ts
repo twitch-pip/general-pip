@@ -20,3 +20,11 @@ export const RESOURCES_PATH = app.isPackaged
 export function getAssetPath(...paths: string[]) {
   return path.join(RESOURCES_PATH, ...paths);
 }
+
+export function base64Encode(str: string) {
+  return Buffer.from(str).toString('base64');
+}
+
+export function base64Decode(str: string) {
+  return Buffer.from(str, 'base64').toString();
+}

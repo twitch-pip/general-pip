@@ -3,6 +3,7 @@ import close from '../../../assets/images/close.svg';
 import styles from '../styles/pip.module.scss';
 import DefaultPlayer from '../components/Players/Default';
 import { PlayerType } from 'renderer/components/Players/Base';
+import { DRM } from '../../@types/drm';
 
 const { ipcRenderer, control } = window.electron;
 
@@ -20,7 +21,15 @@ function Pip(props: PropType) {
     return props.player ?? DefaultPlayer;
   }, [props.player]);
 
+  const [drm, setDrm] = useState<DRM>();
+
+  console.log(props.player);
+
   ipcRenderer.on('pip.video_url', (url) => setUrl(url as string));
+  ipcRenderer.on('pip.drm', (drm) => {
+    console.log('drm', drm);
+    setDrm(drm as DRM);
+  });
   ipcRenderer.on('control.volume', (volume) => setVolume(volume as number));
   ipcRenderer.on('control.play', (state) => setPaused(!(state as boolean)));
   ipcRenderer.on('control.current', (current) =>
@@ -46,6 +55,7 @@ function Pip(props: PropType) {
             paused={paused}
             volume={volume}
             currentTime={currentTime}
+            drm={drm}
             onCurrentTimeUpdate={onTimeUpdate}
             onDurationChange={setDuration}
           />

@@ -1,5 +1,6 @@
 import axios from 'axios';
-import Base from './base';
+import Base, { VideoWithDRM } from './base';
+import { base64Decode } from '../util';
 
 function laftel(url: string) {
   return new LaftelAPI(url);
@@ -52,7 +53,7 @@ export class LaftelAPI {
   private readonly url: string;
   private readonly seriesId: string;
   private readonly episodeId: string;
-  private token?: string;
+  private token?: string = '07d971c8249ebcb2d65ff443600e6eb332143593';
 
   constructor(url: string) {
     this.url = url;
@@ -100,6 +101,8 @@ export class LaftelAPI {
 }
 
 export default class Laftel extends Base {
+  static readonly drmType = 'Widevine';
+
   static get id(): string {
     return 'laftel';
   }
@@ -117,6 +120,21 @@ export default class Laftel extends Base {
     const response = await laftel(url).getInfo();
     console.log(response.public_streaming_info.dash_preview_url);
     return '';
+  }
+
+  static async videoWithDrm(url: string): Promise<VideoWithDRM> {
+    const response = await laftel(url).getInfo();
+    const metadata = JSON.parse(
+      base64Decode(response.protected_streaming_info?.widevine_token!)
+    );
+    console.log(metadata);
+    return {
+      source: response.protected_streaming_info?.dash_url!,
+      drmType: 'Widevine',
+      licenseUri: 'https://license.pallycon.com/ri/licenseManager.do',
+      metadata: metadata,
+      token: response.protected_streaming_info?.widevine_token!,
+    };
   }
 
   static async videoOnlyUrl(url: string): Promise<string> {

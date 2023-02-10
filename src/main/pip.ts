@@ -1,7 +1,24 @@
-import { BrowserWindow, screen } from 'electron';
+import { BrowserWindow, app, screen, session } from 'electron';
 import createWindow from './window';
 
-export function createPIP(path: string, url: string) {
+app.on('ready', () => {
+  // session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
+  //   if (details.url.includes('licenseManager.do'))
+  //     callback({
+  //       requestHeaders: {
+  //         ...details.requestHeaders,
+  //         origin: 'https://laftel.net',
+  //         Referer: 'https://laftel.net/',
+  //       },
+  //     });
+  //   else
+  //     callback({
+  //       requestHeaders: details.requestHeaders,
+  //     });
+  // });
+});
+
+export function createPIP(path: string, url: string): BrowserWindow {
   const control = createWindow(
     {
       width: 640,
@@ -92,4 +109,6 @@ export function createPIP(path: string, url: string) {
     control.setAlwaysOnTop(false);
     control.show();
   });
+
+  return pip;
 }
