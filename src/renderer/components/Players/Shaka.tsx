@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
-import shaka from 'shaka-player';
+// import shaka from 'shaka-player';
+const shaka = require('shaka-player/dist/shaka-player.compiled.debug');
 import { PlayerType, PropType } from './Base';
+import axios from 'axios';
 
 function arrayBufferToString(buffer) {
   var arr = new Uint8Array(buffer);
@@ -57,7 +59,67 @@ const ShakaPlayer: PlayerType = function (props: PropType) {
           //   bufferBehind: 45,
           // },
         };
-        if (props.drm) {
+        if (props.drm?.drmType === 'FairPlay') {
+          async function getFairplayCert() {
+            const { data: t } = await axios.get(
+              'https://license.pallycon.com/ri/fpsKeyManager.do?siteId=BL2G'
+            );
+            return shaka.util.Uint8ArrayUtils.fromBase64(t);
+          }
+          const fairplayCert = await getFairplayCert();
+          playerConfig.drm = {
+            servers: {
+              'com.apple.fps.1_0': props.drm?.licenseUri,
+            },
+            advanced: {
+              'com.apple.fps.1_0': {
+                serverCertificate: fairplayCert,
+              },
+            },
+            initDataTransform: function (initData: string) {
+              const skdUri =
+                shaka.util.StringUtils.fromBytesAutoDetect(initData);
+              console.log('skdUri : ' + skdUri);
+              const contentId = skdUri.substring(skdUri.indexOf('skd://') + 6);
+              console.log('contentId : ', contentId);
+              const cert = player.drmInfo().serverCertificate;
+              return shaka.util.FairPlayUtils.initDataTransform(
+                initData,
+                contentId,
+                cert
+              );
+            },
+          };
+
+          player
+            .getNetworkingEngine()
+            .registerRequestFilter(function (type, request) {
+              if (type == shaka.net.NetworkingEngine.RequestType.LICENSE) {
+                const originalPayload = new Uint8Array(request.body);
+                const base64Payload =
+                  shaka.util.Uint8ArrayUtils.toBase64(originalPayload);
+                const params = 'spc=' + encodeURIComponent(base64Payload);
+
+                request.body = shaka.util.StringUtils.toUTF8(params);
+                request.headers['pallycon-customdata-v2'] = props.drm!.token; // TODO
+              }
+            });
+
+          player
+            .getNetworkingEngine()
+            .registerResponseFilter(function (type, response) {
+              // Alias some utilities provided by the library.
+              if (type == shaka.net.NetworkingEngine.RequestType.LICENSE) {
+                const responseText = shaka.util.StringUtils.fromUTF8(
+                  response.data
+                ).trim();
+                response.data =
+                  shaka.util.Uint8ArrayUtils.fromBase64(responseText).buffer;
+                parsingResponse(response);
+              }
+            });
+        }
+        if (props.drm?.drmType === 'Widevine') {
           playerConfig.drm = {
             servers: {
               'com.widevine.alpha': props.drm?.licenseUri,
@@ -77,6 +139,7 @@ const ShakaPlayer: PlayerType = function (props: PropType) {
               // Only add headers to license requests:
               if (type === shaka.net.NetworkingEngine.RequestType.LICENSE) {
                 // request.headers['CWIP-Auth-Header'] = 'VGhpc0lzQVRlc3QK';
+                console.log('request', request);
                 request.headers['pallycon-customdata-v2'] = props.drm!.token; // TODO
               }
             });
@@ -86,6 +149,7 @@ const ShakaPlayer: PlayerType = function (props: PropType) {
             ?.registerResponseFilter(function (type, response) {
               // Alias some utilities provided by the library.
               if (type === shaka.net.NetworkingEngine.RequestType.LICENSE) {
+                console.log('response', response);
                 parsingResponse(response);
               }
             });

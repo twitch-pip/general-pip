@@ -16,7 +16,8 @@ export default function App() {
         <Route path="/" element={<Index />} />
         <Route path="/pip/youtube" element={<Pip />} />
         <Route path="/pip/twitch" element={<Pip player={HLSPlayer} />} />
-        <Route path="/pip/laftel" element={<Pip player={VideoPlayer} />} />
+        <Route path="/pip/laftel" element={<Pip player={ShakaPlayer} />} />
+        <Route path="/pip/linkkf" element={<Pip />} />
         <Route path="/control" element={<ControlBar />} />
       </Routes>
     </Router>

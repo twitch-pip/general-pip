@@ -37,7 +37,18 @@ const DefaultPlayer: PlayerType = function (props: PropType) {
       onDurationChange={(event) => {
         props.onDurationChange?.((event.target as HTMLVideoElement).duration);
       }}
-    />
+    >
+      {props.caption?.map((k, i) => (
+        <track
+          kind="captions"
+          src={k}
+          srcLang="sub"
+          label="sub"
+          default={i === 0}
+          key={i}
+        />
+      ))}
+    </video>
   );
 };
 

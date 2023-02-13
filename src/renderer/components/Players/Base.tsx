@@ -8,6 +8,7 @@ export interface PropType {
   currentTime?: number;
 
   drm?: DRM;
+  caption?: string[];
 
   onCurrentTimeUpdate?: (time: number) => any;
   onDurationChange?: (duration: number) => any;

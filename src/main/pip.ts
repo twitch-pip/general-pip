@@ -1,20 +1,63 @@
-import { BrowserWindow, app, screen, session } from 'electron';
+import { BrowserWindow, app, protocol, screen, session } from 'electron';
 import createWindow from './window';
+import path, { join } from 'path';
+import fs from 'fs';
+import { URLSearchParams } from 'url';
 
-app.on('ready', () => {
-  // session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
-  //   if (details.url.includes('licenseManager.do'))
-  //     callback({
-  //       requestHeaders: {
-  //         ...details.requestHeaders,
-  //         origin: 'https://laftel.net',
-  //         Referer: 'https://laftel.net/',
-  //       },
+// app.on('ready', () => {
+//   session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
+//     if (details.url.includes('licenseManager.do'))
+//       callback({
+//         requestHeaders: {
+//           ...details.requestHeaders,
+//           origin: 'https://laftel.net',
+//           Referer: 'https://laftel.net/',
+//         },
+//       });
+//     else
+//       callback({
+//         requestHeaders: details.requestHeaders,
+//       });
+//   });
+// });
+
+app.whenReady().then(() => {
+  session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
+    const url = new URL(details.url);
+    if (url.hash && new URLSearchParams(url.hash.slice(1)).get('sh') == '1') {
+      const headers = new URLSearchParams(url.hash.slice(1));
+      headers.delete('sh');
+
+      callback({
+        requestHeaders: {
+          ...details.requestHeaders,
+          ...Object.fromEntries(headers.entries()),
+        },
+      });
+      return;
+    }
+
+    // Continue with the request if the host is not "tempfile"
+    callback({});
+  });
+  // protocol.interceptFileProtocol('http', (request, callback) => {
+  //   const url = new URL(request.url);
+  //   console.log(url);
+  //   if (url.host === 'tempfile') {
+  //     fs.mkdirSync(path.join(app.getPath('temp'), 'general-pip'), {
+  //       recursive: true,
   //     });
-  //   else
+
   //     callback({
-  //       requestHeaders: details.requestHeaders,
+  //       path: path.join(app.getPath('temp'), 'general-pip', url.pathname),
   //     });
+
+  //     return true;
+  //   }
+
+  //   callback(request);
+  //   // protocol.uninterceptProtocol('http');
+  //   return false;
   // });
 });
 
@@ -40,6 +83,13 @@ export function createPIP(path: string, url: string): BrowserWindow {
       hasShadow: false,
       alwaysOnTop: true,
       show: false,
+      webPreferences: {
+        contextIsolation: true,
+        preload: app.isPackaged
+          ? join(__dirname, 'preload.js')
+          : join(__dirname, '../../.erb/dll/preload.js'),
+        webSecurity: false,
+      },
     },
     `/pip/${path}`
   );
