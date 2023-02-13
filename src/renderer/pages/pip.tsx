@@ -22,6 +22,7 @@ function Pip(props: PropType) {
   }, [props.player]);
 
   const [drm, setDrm] = useState<DRM>();
+  const [caption, setCaption] = useState<string[]>();
 
   console.log(props.player);
 
@@ -30,6 +31,7 @@ function Pip(props: PropType) {
     console.log('drm', drm);
     setDrm(drm as DRM);
   });
+  ipcRenderer.on('pip.caption', (caption) => setCaption(caption as string[]));
   ipcRenderer.on('control.volume', (volume) => setVolume(volume as number));
   ipcRenderer.on('control.play', (state) => setPaused(!(state as boolean)));
   ipcRenderer.on('control.current', (current) =>
@@ -56,6 +58,7 @@ function Pip(props: PropType) {
             volume={volume}
             currentTime={currentTime}
             drm={drm}
+            caption={caption}
             onCurrentTimeUpdate={onTimeUpdate}
             onDurationChange={setDuration}
           />

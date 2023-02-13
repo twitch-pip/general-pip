@@ -9,7 +9,7 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain, components } from 'electron';
+import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { getAssetPath, resolveHtmlPath } from './util';
@@ -126,7 +126,7 @@ app.on('window-all-closed', () => {
 app
   .whenReady()
   .then(async () => {
-    await components.whenReady();
+    // await components.whenReady();
     createWindow();
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the

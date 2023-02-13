@@ -16,7 +16,12 @@ export type windowChannel =
   | 'window.isMaximized'
   | 'window.isMinimizable'
   | 'window.isMinimized';
-export type pipChannel = 'pip.create' | 'pip.video_url' | 'pip.id' | 'pip.drm';
+export type pipChannel =
+  | 'pip.create'
+  | 'pip.video_url'
+  | 'pip.id'
+  | 'pip.drm'
+  | 'pip.caption';
 export type controlChannel =
   | 'control.opacity'
   | 'control.volume'

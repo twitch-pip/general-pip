@@ -6,12 +6,16 @@ import acorn from 'acorn';
 import * as walk from 'acorn-walk';
 import { CallExpression, Identifier, Literal } from 'estree';
 import axios from 'axios';
+import path from 'path';
+import * as uuid from 'uuid';
+import fs from 'fs';
+import { VideoWithCaption } from 'main/plugins/base';
 
-async function getVideos(url: string) {
+export async function getVideo(url: string) {
   const browser = await pie.connect(app, puppeteer);
 
   const window = new BrowserWindow({
-    // show: false,
+    show: false,
     webPreferences: {
       sandbox: true,
     },
@@ -20,12 +24,6 @@ async function getVideos(url: string) {
   await window.loadURL(url);
 
   const page = await pie.getPage(browser, window);
-
-  await page.waitForFunction(() =>
-    [...document.querySelectorAll('script')].some((e) =>
-      e.innerHTML.includes('player_post')
-    )
-  );
 
   const html = await page.evaluate(() =>
     [...document.querySelectorAll('script')]
@@ -54,10 +52,43 @@ async function getVideos(url: string) {
     }
   );
 
-  return videos;
+  const original = videos[1];
+
+  const client = axios.create({
+    baseURL: new URL(original).origin,
+    headers: {
+      referer: 'https://linkkf.app/',
+    },
+  });
+
+  const response = await client
+    .get(original, {
+      headers: {
+        referer: 'https://linkkf.app/',
+      },
+    })
+    .then((res) => res.data);
+
+  const $ = cheerio.load(response);
+  const source = $('source').attr('src');
+  const captionUrl = $('track').attr('src') || '';
+
+  const captions = await client.get(captionUrl).then((res) => res.data);
+  const captionName = `${uuid.v4()}.vtt`;
+  const captionLoc = path.join(app.getPath('temp'), 'general-pip', captionName);
+
+  fs.mkdirSync(path.dirname(captionLoc), { recursive: true });
+  fs.writeFileSync(captionLoc, captions, 'utf8');
+
+  return {
+    video: source,
+    caption: `${
+      new URL(original).origin
+    }${captionUrl}#sh=1&referer=https://linkkf.app/`, // `http://localhost:1212/${captionName}#tempfile`,
+  };
 }
 
-function linkkf(url: string) {
+export function linkkf(url: string) {
   return new LinkkfAPI(url);
 }
 
@@ -94,9 +125,11 @@ export class LinkkfAPI {
 
   async login() {}
 
-  async getInfo(): Promise<any> {
-    const videos = await getVideos(this.url);
-    const data = await response.json();
-    return data;
+  async getInfo(): Promise<VideoWithCaption> {
+    const video = await getVideo(this.url);
+    return {
+      source: video.video ?? '',
+      caption: video.caption ?? '',
+    };
   }
 }

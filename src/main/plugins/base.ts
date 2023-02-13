@@ -8,8 +8,14 @@ export interface VideoWithDRM {
   token: string;
 }
 
+export interface VideoWithCaption {
+  source: string;
+  caption: string;
+}
+
 export default class Base {
   static readonly drmType: DRMType | undefined = undefined;
+  static readonly hasCaption: boolean = false;
 
   static get id(): string {
     throw new Error('Not implemented');
@@ -28,6 +34,10 @@ export default class Base {
   }
 
   static async videoWithDrm(url: string): Promise<VideoWithDRM> {
+    throw new Error('Not implemented');
+  }
+
+  static async videoWithCaption(url: string): Promise<VideoWithCaption> {
     throw new Error('Not implemented');
   }
 

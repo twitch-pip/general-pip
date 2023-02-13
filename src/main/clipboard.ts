@@ -32,6 +32,13 @@ async function decision(text: string) {
         console.log('send drm', drm);
         pip.webContents.send('pip.drm', drm);
       });
+    } else if (find.hasCaption) {
+      const videoWithCaption = await find.videoWithCaption(text);
+      const pip = createPIP(find.id, videoWithCaption.source);
+
+      pip.on('ready-to-show', () => {
+        pip.webContents.send('pip.caption', [videoWithCaption.caption]);
+      });
     } else {
       const pip = createPIP(find.id, await find.videoUrl(text));
     }
