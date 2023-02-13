@@ -17,6 +17,7 @@ import { getAssetPath, resolveHtmlPath } from './util';
 import './ipc';
 import './clipboard';
 import TrayBuilder from './tray';
+import pie from 'puppeteer-in-electron';
 
 class AppUpdater {
   constructor() {
@@ -45,6 +46,8 @@ const isDebug =
 // if (isDebug) {
 //   require('electron-debug')();
 // }
+
+pie.initialize(app);
 
 const installExtensions = async () => {
   const installer = require('electron-devtools-installer');
