@@ -52,7 +52,7 @@ export async function getVideo(url: string) {
     }
   );
 
-  const original = videos[1];
+  const original = videos[0];
 
   const client = axios.create({
     baseURL: new URL(original).origin,

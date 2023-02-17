@@ -81,7 +81,6 @@ export function createPIP(path: string, url: string): BrowserWindow {
       height: 360,
       frame: false,
       hasShadow: false,
-      alwaysOnTop: true,
       show: false,
       webPreferences: {
         contextIsolation: true,
@@ -94,6 +93,7 @@ export function createPIP(path: string, url: string): BrowserWindow {
     `/pip/${path}`
   );
   pip.setAspectRatio(16 / 9);
+  pip.setAlwaysOnTop(true, 'screen-saver');
 
   function syncControl() {
     const [x, y] = pip.getPosition();
