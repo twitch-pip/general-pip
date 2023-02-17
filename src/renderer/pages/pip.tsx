@@ -24,8 +24,6 @@ function Pip(props: PropType) {
   const [drm, setDrm] = useState<DRM>();
   const [caption, setCaption] = useState<string[]>();
 
-  console.log(props.player);
-
   ipcRenderer.on('pip.video_url', (url) => setUrl(url as string));
   ipcRenderer.on('pip.drm', (drm) => {
     console.log('drm', drm);
